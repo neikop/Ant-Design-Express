@@ -1,0 +1,21 @@
+{
+  "name": "ant-design-express",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon -w express --exec \"babel-node express --presets env\"",
+    "prestart": "npm install",
+    "start": "node express"
+  },
+  "author": "Neikop",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
+  }
+}
