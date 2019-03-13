@@ -8,7 +8,7 @@ import {timeAgent} from 'agents/Time';
 
 const FEED_LINKS = creator.make`
   query FeedLinks {
-    feed {
+    feed (skip: 50) {
       links {
         id createdAt url description
         postedBy { id name }
@@ -32,7 +32,7 @@ const VOTE_LINK = creator.make`
   mutation VoteLink($linkId: ID!) {
     vote(linkId: $linkId) {
       id link {
-        id createdAt url description
+        id
         votes { id user { id name } }
       }
     }
@@ -53,11 +53,11 @@ class Router extends Component {
     });
   };
 
-  updateStoreAfterVote = (store, createdvote, linkId) => {
+  updateStoreAfterVote = (store, createdVote, linkId) => {
     const data = store.readQuery({query: FEED_LINKS});
 
     const votedLink = data.feed.links.find((link) => link.id === linkId);
-    votedLink.votes = createdvote.link.votes;
+    votedLink.votes = createdVote.link.votes;
 
     store.writeQuery({query: FEED_LINKS, data});
   };
@@ -105,7 +105,7 @@ class Router extends Component {
     return (
       <Fragment>
         <Row>
-          <Col span={8}>
+          <Col span={12}>
             <Query query={FEED_LINKS}>
               {({loading, error, data}) => {
                 if (loading) return <div>Fetching</div>;
@@ -147,7 +147,7 @@ class Router extends Component {
               }}
             </Query>
           </Col>
-          <Col span={16}>
+          <Col span={12}>
             <Form className='wird-form'>
               <Row gutter={15}>
                 <Col>
