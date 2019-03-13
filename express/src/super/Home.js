@@ -138,7 +138,6 @@ class Router extends Component {
                           <Icon type='like' className='mx-4' />
                         </Popover>
                         {link.votes.length}
-                        <span> - created {timeAgent.timeDifferenceForDate(link.createdAt)}</span>
                         {link.postedBy && <span> - by {link.postedBy.name}</span>}
                       </div>
                     ))}
