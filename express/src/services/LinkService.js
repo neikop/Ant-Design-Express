@@ -1,9 +1,8 @@
-import {client} from 'settings/ApolloClient';
-import gql from 'graphql-tag';
+import {client, creator} from 'instances/ApolloClient';
 
 const feed = () =>
   client.query({
-    query: gql`
+    query: creator.make`
       {
         feed {
           links {

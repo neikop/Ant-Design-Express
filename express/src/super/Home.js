@@ -1,29 +1,40 @@
 import React, {Component, Fragment} from 'react';
-import {Row, Col, Form, Input, Button} from 'antd';
-import LinkService from 'services/LinkService';
-import {Query, } from 'react-apollo';
-import gql from 'graphql-tag';
+import {Query, Mutation} from 'react-apollo';
+import {Row, Col, Form, Input, Button, Icon, Popover} from 'antd';
+import {creator} from 'instances/ApolloClient';
+import {alertAgent} from 'instances/Alert';
+import {storageAgent} from 'agents/LocalStorage';
+import {timeAgent} from 'agents/Time';
 
-const FEED_QUERY = gql`
-  {
+const FEED_LINKS = creator.make`
+  query FeedLinks {
     feed {
       links {
-        id
-        createdAt
-        url
-        description
+        id createdAt url description
+        postedBy { id name }
+        votes { id user { id name } }
       }
     }
   }
 `;
 
-const POST_MUTATION = gql`
-  mutation PostMutation($description: String!, $url: String!) {
+const POST_LINK = creator.make`
+  mutation CreateLink($description: String!, $url: String!) {
     post(description: $description, url: $url) {
-      id
-      createdAt
-      url
-      description
+      id createdAt url description
+      postedBy { id name }
+      votes { id user { id name } }
+    }
+  }
+`;
+
+const VOTE_LINK = creator.make`
+  mutation VoteLink($linkId: ID!) {
+    vote(linkId: $linkId) {
+      id link {
+        id createdAt url description
+        votes { id user { id name } }
+      }
     }
   }
 `;
@@ -34,47 +45,144 @@ class Router extends Component {
     this.state = {};
   }
 
-  componentDidMount = () => {
-    LinkService.feed().then((response) => {
-      console.log(response);
+  componentDidMount = () => {};
+
+  handleClickVote = (linkId, sendRequest) => {
+    sendRequest({
+      variables: {linkId},
     });
   };
 
+  updateStoreAfterVote = (store, createdvote, linkId) => {
+    const data = store.readQuery({query: FEED_LINKS});
+
+    const votedLink = data.feed.links.find((link) => link.id === linkId);
+    votedLink.votes = createdvote.link.votes;
+
+    store.writeQuery({query: FEED_LINKS, data});
+  };
+
+  handleClickPost = (sendRequest) => {
+    const {form} = this.props;
+    form.validateFields((error, values) => {
+      if (!error) {
+        sendRequest({
+          variables: {
+            ...values,
+          },
+        }).then((response) => {
+          const {post: link} = response.data;
+          alertAgent.success({
+            message: 'Create Link',
+            description: (
+              <div>
+                <div>Successfully: {link.createdAt}</div>
+                <div>URL: {link.url}</div>
+                <div>Description: {link.description}</div>
+              </div>
+            ),
+          });
+          form.resetFields();
+        });
+      }
+    });
+  };
+
+  updateStoreAfterPost = (store, createdPost) => {
+    const data = store.readQuery({query: FEED_LINKS});
+
+    data.feed.links.unshift(createdPost);
+
+    store.writeQuery({query: FEED_LINKS, data});
+  };
+
   render() {
-    // const {getFieldDecorator} = this.props.form;
+    const {form} = this.props;
+    const {getFieldDecorator} = form;
+
+    const isLogin = storageAgent.getAuthToken();
 
     return (
       <Fragment>
-        Home
-        <Query query={FEED_QUERY}>
-          {({loading, error, data}) => {
-            if (loading) return <div>Fetching</div>;
-            if (error) return <div>Error</div>;
-            return (
-              <div>
-                {data.feed.links.map((link) => (
-                  <div key={link.id}>{link.url}</div>
-                ))}
-              </div>
-            );
-          }}
-        </Query>
-        {/* <Form>
-          <Row>
-            <Col>
-              <Form.Item label='URL'>{getFieldDecorator('url')(<Input />)}</Form.Item>
-              <Form.Item label='Description'>{getFieldDecorator('description')(<Input />)}</Form.Item>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Button>Post</Button>
-            </Col>
-          </Row>
-        </Form> */}
+        <Row>
+          <Col span={8}>
+            <Query query={FEED_LINKS}>
+              {({loading, error, data}) => {
+                if (loading) return <div>Fetching</div>;
+                if (error) return <div>Error</div>;
+                return (
+                  <div>
+                    {data.feed.links.map((link) => (
+                      <div key={link.id} className='mb-4'>
+                        {isLogin && (
+                          <Mutation
+                            mutation={VOTE_LINK}
+                            update={(store, {data: {vote}}) => this.updateStoreAfterVote(store, vote, link.id)}>
+                            {(sendRequest, {loading}) => (
+                              <Button
+                                size='small'
+                                icon='up'
+                                className='mr-4'
+                                loading={loading}
+                                onClick={() => this.handleClickVote(link.id, sendRequest)}
+                              />
+                            )}
+                          </Mutation>
+                        )}
+                        <span className='text-link'>{link.url}</span>
+                        <Popover
+                          trigger='click'
+                          content={link.votes.map((vote) => (
+                            <div key={vote.id}>{vote.user.name}</div>
+                          ))}>
+                          <Icon type='like' className='mx-4' />
+                        </Popover>
+                        {link.votes.length}
+                        <span> - created {timeAgent.timeDifferenceForDate(link.createdAt)}</span>
+                        {link.postedBy && <span> - by {link.postedBy.name}</span>}
+                      </div>
+                    ))}
+                  </div>
+                );
+              }}
+            </Query>
+          </Col>
+          <Col span={16}>
+            <Form className='wird-form'>
+              <Row gutter={15}>
+                <Col>
+                  <Form.Item label='URL'>
+                    {getFieldDecorator('url', {
+                      rules: [{required: true, message: 'Required field: URL'}],
+                    })(<Input />)}
+                  </Form.Item>
+                  <Form.Item label='Description'>
+                    {getFieldDecorator('description', {
+                      rules: [{required: true, message: 'Required field: Description'}],
+                    })(<Input />)}
+                  </Form.Item>
+
+                  <Mutation
+                    mutation={POST_LINK}
+                    update={(store, {data: {post}}) => this.updateStoreAfterPost(store, post)}>
+                    {(sendRequest, {loading}) => (
+                      <Button
+                        icon='fire'
+                        type='primary'
+                        loading={loading}
+                        onClick={() => this.handleClickPost(sendRequest)}>
+                        Post
+                      </Button>
+                    )}
+                  </Mutation>
+                </Col>
+              </Row>
+            </Form>
+          </Col>
+        </Row>
       </Fragment>
     );
   }
 }
 
-export default Form.create(Router);
+export default Form.create()(Router);

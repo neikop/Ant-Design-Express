@@ -10,3 +10,28 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+.mx-4 {
+  margin: 0 4px;
+}
+
+.ml-4 {
+  margin-left: 4px;
+}
+
+.mr-4 {
+  margin-right: 4px;
+}
+
+.mb-4 {
+  margin-bottom: 4px;
+}
+
+.text-link {
+  color: #20a8d8;
+  cursor: pointer;
+}
+
+.text-link:hover {
+  color: #167495;
+}

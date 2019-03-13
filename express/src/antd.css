@@ -69,3 +69,28 @@
 .ant-menu.ant-menu-dark .ant-menu-item-selected:hover {
   background: dodgerblue !important;
 }
+
+/* WIRD FORM */
+.wird-form .ant-form-item-label {
+  display: block;
+  text-align: left;
+  line-height: unset;
+  padding: 0px;
+}
+
+.ant-form-item-required:before {
+  display: none;
+}
+
+.ant-form-item-required:after {
+  content: '✻' !important;
+  display: inline-block !important;
+  font-weight: normal;
+  color: orangered;
+}
+
+/* BUTTON */
+.ant-btn {
+  display: inline-flex;
+  align-items: center;
+}
