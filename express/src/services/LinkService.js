@@ -16,6 +16,6 @@ const feed = () =>
     `,
   });
 
-export default {
+export const linkService = {
   feed,
 };

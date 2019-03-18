@@ -4,11 +4,10 @@ import {Row, Col, Form, Input, Button, Icon, Popover} from 'antd';
 import {creator} from 'instances/ApolloClient';
 import {alertAgent} from 'instances/Alert';
 import {storageAgent} from 'agents/LocalStorage';
-import {timeAgent} from 'agents/Time';
 
 const FEED_LINKS = creator.make`
   query FeedLinks {
-    feed (skip: 50) {
+    feed (skip: 80) {
       links {
         id createdAt url description
         postedBy { id name }
@@ -31,7 +30,8 @@ const POST_LINK = creator.make`
 const VOTE_LINK = creator.make`
   mutation VoteLink($linkId: ID!) {
     vote(linkId: $linkId) {
-      id link {
+      id
+      link {
         id
         votes { id user { id name } }
       }
@@ -70,20 +70,27 @@ class Router extends Component {
           variables: {
             ...values,
           },
-        }).then((response) => {
-          const {post: link} = response.data;
-          alertAgent.success({
-            message: 'Create Link',
-            description: (
-              <div>
-                <div>Successfully: {link.createdAt}</div>
-                <div>URL: {link.url}</div>
-                <div>Description: {link.description}</div>
-              </div>
-            ),
+        })
+          .then((response) => {
+            const {post: link} = response.data;
+            alertAgent.success({
+              message: 'Create Link',
+              description: (
+                <div>
+                  <div>Successfully: {link.createdAt}</div>
+                  <div>URL: {link.url}</div>
+                  <div>Description: {link.description}</div>
+                </div>
+              ),
+            });
+            form.resetFields();
+          })
+          .catch((error) => {
+            alertAgent.error({
+              message: 'Login',
+              description: error.message,
+            });
           });
-          form.resetFields();
-        });
       }
     });
   };
@@ -114,21 +121,20 @@ class Router extends Component {
                   <div>
                     {data.feed.links.map((link) => (
                       <div key={link.id} className='mb-4'>
-                        {isLogin && (
-                          <Mutation
-                            mutation={VOTE_LINK}
-                            update={(store, {data: {vote}}) => this.updateStoreAfterVote(store, vote, link.id)}>
-                            {(sendRequest, {loading}) => (
-                              <Button
-                                size='small'
-                                icon='up'
-                                className='mr-4'
-                                loading={loading}
-                                onClick={() => this.handleClickVote(link.id, sendRequest)}
-                              />
-                            )}
-                          </Mutation>
-                        )}
+                        <Mutation
+                          mutation={VOTE_LINK}
+                          update={(store, {data: {vote}}) => this.updateStoreAfterVote(store, vote, link.id)}>
+                          {(sendRequest, {loading}) => (
+                            <Button
+                              size='small'
+                              icon='up'
+                              className='mr-4'
+                              disabled={!isLogin}
+                              loading={loading}
+                              onClick={() => this.handleClickVote(link.id, sendRequest)}
+                            />
+                          )}
+                        </Mutation>
                         <span className='text-link'>{link.url}</span>
                         <Popover
                           trigger='click'
@@ -163,7 +169,8 @@ class Router extends Component {
 
                   <Mutation
                     mutation={POST_LINK}
-                    update={(store, {data: {post}}) => this.updateStoreAfterPost(store, post)}>
+                    update={(store, {data: {post}}) => this.updateStoreAfterPost(store, post)}
+                    >
                     {(sendRequest, {loading}) => (
                       <Button
                         icon='fire'
