@@ -23,7 +23,7 @@ async function feed(parent, args, context) {
   })
   return {
     count,
-    links: links.reverse(),
+    links,
   }
 }
 
