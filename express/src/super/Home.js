@@ -185,12 +185,16 @@ class Router extends Component {
       <Fragment>
         <Row gutter={30}>
           <Col span={12}>
-            <Query query={FEED_LINKS} >
+            <Query query={FEED_LINKS}>
               {({loading, error, data, refetch, subscribeToMore}) => {
                 this.refetch = refetch;
                 if (!loading && !error) {
                   // this.subscribeToNewLinks(subscribeToMore);
                   this.subscribeToNewVotes(subscribeToMore);
+                }
+                if (!data) {
+                  console.log(NEW_LINKS_SUBSCRIPTION);
+                  return <div>Loading</div>;
                 }
                 return (
                   <Form className='wird-form'>

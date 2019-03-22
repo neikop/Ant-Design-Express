@@ -35,3 +35,14 @@ code {
 .text-link:hover {
   color: #167495;
 }
+
+.rst__rowTitle {
+  font-weight: 600;
+}
+
+.rst__rowContents .rst__rowTitle {
+  color: brown;
+}
+.rst__rowContentsDragDisabled .rst__rowTitle {
+  color: dimgrey;
+}

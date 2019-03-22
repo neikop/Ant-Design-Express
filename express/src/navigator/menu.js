@@ -4,6 +4,7 @@ import CampaignScript from 'super/CampaignScript';
 import CampaignScriptQuestion from 'super/CampaignScriptQuestion';
 import Report from 'super/Report';
 import Customer from 'super/Customer';
+import Ticket from 'super/Ticket';
 
 export default [
   {
@@ -89,5 +90,6 @@ export default [
     name: 'Ticket',
     icon: 'tags',
     url: '/ticket',
+    target: Ticket,
   },
 ];

@@ -6,6 +6,7 @@ import {browserHistory} from 'instances/History';
 import {client} from 'instances/ApolloClient';
 import {alert} from 'instances/Alert';
 import App from 'containers/App';
+import 'react-sortable-tree/style.css';
 import 'antd/dist/antd.css';
 import 'antd.css';
 import 'index.css';
