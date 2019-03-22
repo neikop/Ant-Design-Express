@@ -4,12 +4,22 @@ const Query = require('./resolvers/Query');
 const Mutation = require('./resolvers/Mutation');
 const User = require('./resolvers/User');
 const Link = require('./resolvers/Link');
+const Campaign = require('./resolvers/Campaign');
+const Script = require('./resolvers/Script');
+const Question = require('./resolvers/Question');
+const Answer = require('./resolvers/Answer');
+const Decision = require('./resolvers/Decision');
 
 const resolvers = {
   Query,
   Mutation,
   User,
   Link,
+  Campaign,
+  Script,
+  Question,
+  Answer,
+  Decision,
 };
 
 // 3

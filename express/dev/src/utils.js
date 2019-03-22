@@ -9,7 +9,7 @@ function getUserId(context) {
     return userId;
   }
 
-  throw new Error('Not authenticated');
+  throw new Error('Not Authenticated');
 }
 
 module.exports = {

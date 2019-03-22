@@ -1,21 +1,3 @@
-type Query {
-  feed: [Link!]!
-}
-
-type Mutation {
-  post(url: String!, description: String!): Link!
-
-  signup(email: String!, password: String!, name: String!): AuthPayload
-  login(email: String!, password: String!): AuthPayload
-}
-
-type Link {
-  id: ID!
-  description: String!
-  url: String!
-  postedBy: User!
-}
-
 type AuthPayload {
   token: String
   user: User
@@ -26,4 +8,70 @@ type User {
   name: String!
   email: String!
   links: [Link!]!
+}
+
+type Link {
+  id: ID!
+  description: String!
+  url: String!
+  postedBy: User!
+}
+
+type Campaign {
+  id: ID!
+  name: String!
+  code: String!
+  script: Script
+}
+
+type Script {
+  id: ID!
+  campaign: Campaign!
+  story: [Decision!]!
+}
+
+type Decision {
+  id: ID!
+  script: Script!
+  question: Question!
+  level: Int!
+  fromAnswer: Answer
+}
+
+type Question {
+  id: ID!
+  value: String!
+  answers: [Answer!]!
+}
+
+type Answer {
+  id: ID!
+  value: String!
+  question: Question!
+}
+
+type Query {
+  feed: [Link!]!
+  campaignList: [Campaign!]!
+  scriptList: [Script!]!
+  scriptGet(id: ID!): Script
+
+  questionList: [Question!]!
+  answerList: [Answer!]!
+
+  decisionTree: [Decision!]!
+}
+
+type Mutation {
+  signup(email: String!, password: String!, name: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
+  post(url: String!, description: String!): Link!
+
+  createCampaign(name: String!): Campaign!
+  createScript(campaignId: ID!): Script!
+
+  createQuestion(value: String!): Question!
+  createAnswer(value: String!, questionId: ID!): Answer!
+
+  createDecision(scriptId: ID!, questionId: ID!, level: Int!, answerId: ID): Decision
 }

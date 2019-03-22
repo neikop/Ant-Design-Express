@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
+    "prisma": "prisma",
     "start": "node src/index.js",
-    "prisma": "prisma"
+    "dev": "nodemon -w src --exec \"node src --presets env\""
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
