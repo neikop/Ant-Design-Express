@@ -32,7 +32,7 @@
 
 .ant-menu-item-group-title {
   color: orange !important;
-  font-weight: 600;
+  font-weight: 500;
   transition: none;
 }
 
@@ -87,6 +87,10 @@
   display: inline-block !important;
   font-weight: normal;
   color: orangered;
+}
+
+.ant-form-item-no-explain .ant-form-explain {
+  display: none;
 }
 
 /* BUTTON */

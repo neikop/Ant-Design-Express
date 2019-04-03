@@ -1,11 +1,11 @@
-# Specifies the HTTP endpoint of your Prisma API.
+# The HTTP endpoint for your Prisma API
 #endpoint: ''
-endpoint: https://us1.prisma.sh/kkoutplayed/wirdor/dev
+endpoint: https://us1.prisma.sh/kkoutplayed/learn/dev
 
-# Defines your models, each model is mapped to the database as a table.
+# Points to the file that contains your datamodel
 datamodel: datamodel.prisma
 
-# Specifies the language and directory for the generated Prisma client.
+# Specifies language & location for the generated Prisma client
 generate:
   - generator: javascript-client
     output: ../src/generated/prisma-client

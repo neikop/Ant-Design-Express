@@ -5,6 +5,7 @@ import AppRouter from 'components/AppRouter';
 import AppHeader from 'components/AppHeader';
 import MenuSidebar from 'components/MenuSidebar';
 import Breadcrumb from 'components/Breadcrumb';
+// import Pusher, {pusher} from 'instances/Pusher';
 import './App.css';
 
 const {Footer, Sider, Content} = Layout;
@@ -13,6 +14,14 @@ class App extends Component {
   constructor() {
     super();
     this.state = {};
+
+    // const x = new Pusher('201c5248cff38194')
+    // x.bind('income_call', (data) => {
+    //   console.log(data);
+    // });
+    // pusher.bind('income_call', (data) => {
+    //   console.log(data);
+    // });
   }
 
   handleChangeCallapse = (collapsed) => {

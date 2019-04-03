@@ -5,21 +5,37 @@ var typeDefs = require("./prisma-schema").typeDefs;
 
 var models = [
   {
-    name: "Link",
-    embedded: false
-  },
-  {
     name: "User",
     embedded: false
   },
   {
-    name: "Vote",
+    name: "Link",
+    embedded: false
+  },
+  {
+    name: "Campaign",
+    embedded: false
+  },
+  {
+    name: "Script",
+    embedded: false
+  },
+  {
+    name: "Decision",
+    embedded: false
+  },
+  {
+    name: "Question",
+    embedded: false
+  },
+  {
+    name: "Answer",
     embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `https://us1.prisma.sh/kkoutplayed/wirdor/dev`
+  endpoint: `https://us1.prisma.sh/kkoutplayed/learn/dev`
 });
 exports.prisma = new exports.Prisma();

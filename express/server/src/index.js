@@ -1,27 +1,36 @@
-const { GraphQLServer } = require('graphql-yoga')
-const { prisma } = require('./generated/prisma-client')
-const Query = require('./resolvers/Query')
-const Mutation = require('./resolvers/Mutation')
-const Subscription = require('./resolvers/Subscription')
-const User = require('./resolvers/User')
-const Link = require('./resolvers/Link')
-const Vote = require('./resolvers/Vote')
+const {GraphQLServer} = require('graphql-yoga');
+const {prisma} = require('./generated/prisma-client');
+const Query = require('./resolvers/Query');
+const Mutation = require('./resolvers/Mutation');
+const User = require('./resolvers/User');
+const Link = require('./resolvers/Link');
+const Campaign = require('./resolvers/Campaign');
+const Script = require('./resolvers/Script');
+const Question = require('./resolvers/Question');
+const Answer = require('./resolvers/Answer');
+const Decision = require('./resolvers/Decision');
 
 const resolvers = {
   Query,
   Mutation,
-  Subscription,
   User,
   Link,
-  Vote,
-}
+  Campaign,
+  Script,
+  Question,
+  Answer,
+  Decision,
+};
 
+// 3
 const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
   resolvers,
-  context: request => ({
-    ...request,
-    prisma,
-  }),
-})
-server.start(() => console.log(`Server is running on http://localhost:4000`))
+  context: (request) => {
+    return {
+      ...request,
+      prisma,
+    };
+  },
+});
+server.start(() => console.log(`Server is running on http://localhost:4000`));

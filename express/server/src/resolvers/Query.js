@@ -1,32 +1,38 @@
-async function feed(parent, args, context) {
-  const count = await context.prisma
-    .linksConnection({
-      where: {
-        OR: [
-          { description_contains: args.filter },
-          { url_contains: args.filter },
-        ],
-      },
-    })
-    .aggregate()
-    .count()
-  const links = await context.prisma.links({
-    where: {
-      OR: [
-        { description_contains: args.filter },
-        { url_contains: args.filter },
-      ],
-    },
-    skip: args.skip,
-    first: args.first,
-    orderBy: args.orderBy,
-  })
-  return {
-    count,
-    links,
-  }
-}
+const feed = (parent, args, context, info) => {
+  return context.prisma.links();
+};
+
+const campaignList = (parent, args, context, info) => {
+  return context.prisma.campaigns();
+};
+
+const scriptList = (parent, args, context, info) => {
+  return context.prisma.scripts();
+};
+
+const scriptGet = (parent, args, context, info) => {
+  return context.prisma.script({id: args.id});
+};
+
+const questionList = (parent, args, context, info) => {
+  return context.prisma.questions();
+};
+
+const answerList = (parent, args, context, info) => {
+  return context.prisma.answers();
+};
+
+const decisionTree = (parent, args, context, info) => {
+  return context.prisma.decisions();
+};
 
 module.exports = {
   feed,
-}
+  campaignList,
+  scriptList,
+  scriptGet,
+  questionList,
+  answerList,
+
+  decisionTree,
+};

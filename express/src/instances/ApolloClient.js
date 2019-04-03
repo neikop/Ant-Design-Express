@@ -8,7 +8,8 @@ import {InMemoryCache} from 'apollo-cache-inmemory';
 import {storageAgent} from 'agents/LocalStorage';
 import gql from 'graphql-tag';
 
-const IPv4 = '172.16.60.13:4000';
+// const IPv4 = '172.16.60.13:4000';
+const IPv4 = 'localhost:4000';
 
 const httpLink = createHttpLink({
   uri: `http://${IPv4}`,

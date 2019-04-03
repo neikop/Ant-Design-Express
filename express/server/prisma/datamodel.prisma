@@ -1,23 +1,48 @@
-type Link {
-  id: ID! @unique
-  createdAt: DateTime!
-  description: String!
-  url: String!
-  postedBy: User
-  votes: [Vote!]!
-}
-
 type User {
   id: ID! @unique
   name: String!
   email: String! @unique
   password: String!
   links: [Link!]!
-  votes: [Vote!]!
 }
 
-type Vote {
+type Link {
   id: ID! @unique
-  link: Link!
-  user: User!
+  createdAt: DateTime!
+  description: String!
+  url: String!
+  postedBy: User!
+}
+
+type Campaign {
+  id: ID! @unique
+  name: String!
+  code: String!
+  script: Script
+}
+
+type Script {
+  id: ID! @unique
+  campaign: Campaign!
+  story: [Decision!]!
+}
+
+type Decision {
+  id: ID! @unique
+  script: Script!
+  question: Question!
+  level: Int!
+  fromAnswer: Answer
+}
+
+type Question {
+  id: ID! @unique
+  value: String!
+  answers: [Answer!]!
+}
+
+type Answer {
+  id: ID! @unique
+  value: String!
+  question: Question!
 }

@@ -1,36 +1,3 @@
-scalar DateTime
-
-type Query {
-  info: String!
-  feed(filter: String, skip: Int, first: Int, orderBy: LinkOrderByInput): Feed!
-}
-
-enum LinkOrderByInput {
-  description_ASC
-  description_DESC
-  url_ASC
-  url_DESC
-  createdAt_ASC
-  createdAt_DESC
-}
-
-type Feed {
-  links: [Link!]!
-  count: Int!
-}
-
-type Mutation {
-  post(url: String!, description: String!): Link!
-  signup(email: String!, password: String!, name: String!): AuthPayload
-  login(email: String!, password: String!): AuthPayload
-  vote(linkId: ID!): Vote!
-}
-
-type Subscription {
-  newLink: Link
-  newVote: Vote
-}
-
 type AuthPayload {
   token: String
   user: User
@@ -45,15 +12,66 @@ type User {
 
 type Link {
   id: ID!
-  createdAt: DateTime!
   description: String!
   url: String!
-  postedBy: User
-  votes: [Vote!]!
+  postedBy: User!
 }
 
-type Vote {
+type Campaign {
   id: ID!
-  link: Link!
-  user: User!
+  name: String!
+  code: String!
+  script: Script
+}
+
+type Script {
+  id: ID!
+  campaign: Campaign!
+  story: [Decision!]!
+}
+
+type Decision {
+  id: ID!
+  script: Script!
+  question: Question!
+  level: Int!
+  fromAnswer: Answer
+}
+
+type Question {
+  id: ID!
+  value: String!
+  answers: [Answer!]!
+}
+
+type Answer {
+  id: ID!
+  value: String!
+  question: Question!
+}
+
+type Query {
+  feed: [Link!]!
+  campaignList: [Campaign!]!
+  scriptList: [Script!]!
+  scriptGet(id: ID!): Script
+
+  questionList: [Question!]!
+  answerList: [Answer!]!
+
+  decisionTree: [Decision!]!
+}
+
+type Mutation {
+  signup(email: String!, password: String!, name: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
+  post(url: String!, description: String!): Link!
+
+  createCampaign(name: String!): Campaign!
+  createScript(campaignId: ID!): Script!
+
+  createQuestion(value: String!): Question!
+  createAnswer(value: String!, questionId: ID!): Answer!
+
+  createDecision(scriptId: ID!, questionId: ID!, level: Int!, answerId: ID): Decision
 }

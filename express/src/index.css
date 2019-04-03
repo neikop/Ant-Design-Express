@@ -27,6 +27,10 @@ code {
   margin-bottom: 4px;
 }
 
+.mb-0 {
+  margin-bottom: 0px;
+}
+
 .text-link {
   color: #20a8d8;
   cursor: pointer;
@@ -36,8 +40,25 @@ code {
   color: #167495;
 }
 
+.text-link-orange {
+  color: hotpink;
+  cursor: pointer;
+}
+
+.text-link-orange:hover {
+  color: red;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .rst__rowTitle {
-  font-weight: 600;
+  font-weight: 500;
+}
+
+.rst__rowContents {
+  min-width: 360px;
 }
 
 .rst__rowContents .rst__rowTitle {
@@ -45,4 +66,45 @@ code {
 }
 .rst__rowContentsDragDisabled .rst__rowTitle {
   color: dimgrey;
+}
+
+.rst__tree {
+  min-height: 1vh !important;
+  height: unset !important;
+}
+
+.rst__tree > div:first-child {
+  overflow: auto hidden !important;
+  height: unset !important;
+  width: unset !important;
+}
+
+.rst__virtualScrollOverride {
+  overflow: unset !important;
+}
+
+.ReactVirtualized__Grid.ReactVirtualized__List.rst__virtualScrollOverride {
+  height: unset !important;
+}
+
+.rst__answer-text-field {
+  width: 540px;
+}
+.rst__answer-text-field .rst__rowLabel {
+  display: none;
+}
+.rst__answer-text-field .rst__rowToolbar,
+.rst__answer-text-field .rst__toolbarButton {
+  width: 100%;
+}
+.rst__answer-text-field .rst__toolbarButton > div {
+  display: flex;
+  align-items: center;
+}
+.rst__answer-text-field .ant-form-item {
+  width: 100%;
+  margin-right: 20px;
+}
+.rst__answer-text-label .ant-form-item {
+  display: none;
 }

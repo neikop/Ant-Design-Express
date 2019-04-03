@@ -4,18 +4,18 @@ import CustomerUpdate from 'super/CustomerUpdate';
 
 export default [
   {
-    name: 'Update',
-    url: '/campaign/:id/update',
-    target: CampaignUpdate,
-  },
-  {
     name: 'Create',
     url: '/customer/create',
     target: CustomerCreate,
   },
   {
     name: 'Update',
-    url: '/customer/:id/update',
+    url: '/campaign/update/:id',
+    target: CampaignUpdate,
+  },
+  {
+    name: 'Update',
+    url: '/customer/update/:id',
     target: CustomerUpdate,
   },
 ];

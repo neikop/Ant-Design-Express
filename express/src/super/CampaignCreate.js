@@ -12,7 +12,7 @@ class Router extends Component {
       <Fragment>
         Campaign Create
         <div>
-          <Link to='/campaign/1/update'>Update</Link>
+          <Link to='/campaign/update/1'>Update</Link>
         </div>
       </Fragment>
     );
