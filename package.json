@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -w express --exec \"babel-node express --presets env\"",
+    "dev": "nodemon -w express --exec \"babel-node client --presets env\"",
     "prestart": "npm install",
     "start": "node express"
   },
