@@ -70,6 +70,10 @@
   background: dodgerblue !important;
 }
 
+.ant-layout-sider-dark .ant-layout-sider-trigger {
+  background: linear-gradient(#001529, #002140);
+}
+
 /* WIRD FORM */
 .wird-form .ant-form-item-label {
   display: block;

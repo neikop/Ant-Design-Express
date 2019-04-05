@@ -24,7 +24,10 @@ class App extends Component {
     return (
       <Layout>
         <Sider width={240} collapsible collapsed={collapsed} onCollapse={this.handleChangeCallapse}>
-          <div className='logo' />
+          <div className='logo'>
+            <img alt='logo' src='https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg' />
+            <span>Ant Design Basic</span>
+          </div>
           <MenuSidebar />
         </Sider>
         <Layout>
@@ -33,7 +36,9 @@ class App extends Component {
             <Breadcrumb />
             <AppRouter />
           </Content>
-          <Footer>Ant Design Basic ©2019 Created by Neikop</Footer>
+          <Footer>
+            <code>Ant Design Basic ©2019 Created by Neikop</code>
+          </Footer>
         </Layout>
       </Layout>
     );
